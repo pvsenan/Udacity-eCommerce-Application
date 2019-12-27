@@ -48,9 +48,9 @@ public class OrderControllerTest {
 
     @Test
     public void shouldBeAbleToSubmitOrder() throws Exception {
-        createUser("prab");
+        createUser("pvs");
         ModifyCartRequest modifyCartRequest = new ModifyCartRequest();
-        modifyCartRequest.setUsername("prab");
+        modifyCartRequest.setUsername("pvs");
         modifyCartRequest.setItemId(1);
         modifyCartRequest.setQuantity(1);
         mockMvc.perform(MockMvcRequestBuilders.post(new URI("/api/cart/addToCart"))
@@ -60,7 +60,7 @@ public class OrderControllerTest {
         )
                 .andExpect(status().isOk());
 
-        mockMvc.perform(MockMvcRequestBuilders.post(new URI("/api/order/submit/prab"))
+        mockMvc.perform(MockMvcRequestBuilders.post(new URI("/api/order/submit/pvs"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", token))
                 .andExpect(status().isOk());
@@ -68,9 +68,9 @@ public class OrderControllerTest {
 
     @Test
     public void shouldBeAbleToSeeSubmittedOrders() throws Exception{
-        createUser("test");
+        createUser("orderUser");
         ModifyCartRequest modifyCartRequest = new ModifyCartRequest();
-        modifyCartRequest.setUsername("test");
+        modifyCartRequest.setUsername("orderUser");
         modifyCartRequest.setItemId(1);
         modifyCartRequest.setQuantity(1);
         mockMvc.perform(MockMvcRequestBuilders.post(new URI("/api/cart/addToCart"))
@@ -79,12 +79,12 @@ public class OrderControllerTest {
                 .header("Authorization", token))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(MockMvcRequestBuilders.post(new URI("/api/order/submit/test"))
+        mockMvc.perform(MockMvcRequestBuilders.post(new URI("/api/order/submit/orderUser"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", token))
                 .andExpect(status().isOk());
 
-       MvcResult orders = mockMvc.perform(MockMvcRequestBuilders.get(new URI("/api/order/history/test"))
+       MvcResult orders = mockMvc.perform(MockMvcRequestBuilders.get(new URI("/api/order/history/orderUser"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", token))
                 .andExpect(status().isOk())
