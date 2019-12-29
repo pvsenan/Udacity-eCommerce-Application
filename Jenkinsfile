@@ -11,10 +11,10 @@ pipeline {
              steps { sh 'mvn package -DskipTests'}
         }
         stage ("copy artifact"){
-             steps { sh 'cp target/auth-course-0.0.1-SNAPSHOT.jar /tmp/ecom_app.jar'}
+             steps { sh 'cp target/auth-course-0.0.1-SNAPSHOT.jar /tmp/ecom_app.jar && chmod 755 /tmp/ecom_app.jar'}
         }
         stage ("Deploy"){
-             steps { sh 'cd /tmp && java -jar ecom_app.jar &'}
+             steps { sh 'cd /tmp  && java -jar ecom_app.jar &'}
         }
     }
 }
