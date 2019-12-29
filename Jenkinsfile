@@ -4,11 +4,17 @@ pipeline {
         stage ("Build"){
             steps { sh 'mvn clean compile'}
         }
+        stage ("Build"){
+             steps { sh 'mvn package'}
+        }
         stage ('Testing Stage') {
             steps { sh 'mvn test' }
         }
-        stage ('Deployment Stage') {
-             steps { sh 'cp target/auth-course*.jar /tmp' }
+        stage ("Copy"){
+             steps { sh 'cp *-SNAPSHOT.jar /tmp'}
+          }
+        stage ('Archive artifacts') {
+             steps { archiveArtifacts artifacts: 'dist/ecom_api.zip' }
         }
     }
 }
