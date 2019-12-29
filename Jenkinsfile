@@ -8,7 +8,7 @@ pipeline {
             steps { sh 'mvn test' }
         }
         stage ('Deployment Stage') {
-             steps { sh 'cp auth-course*.jar /tmp' }
+             steps { sh 'cp target/auth-course*.jar /tmp' }
         }
     }
 }
