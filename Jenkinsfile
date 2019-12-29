@@ -4,7 +4,7 @@ pipeline {
         stage ("Build"){
             steps { sh 'mvn clean compile'}
         }
-        stage ("Build"){
+        stage ("Package"){
              steps { sh 'mvn package'}
         }
         stage ('Testing Stage') {
