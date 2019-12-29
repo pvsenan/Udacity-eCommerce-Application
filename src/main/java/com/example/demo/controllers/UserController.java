@@ -2,6 +2,8 @@ package com.example.demo.controllers;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ public class UserController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	private Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	@GetMapping("/id/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id) {
 		return ResponseEntity.of(userRepository.findById(id));
@@ -40,7 +44,12 @@ public class UserController {
 	@GetMapping("/{username}")
 	public ResponseEntity<User> findByUserName(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
-		return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+		if(user == null){
+			logger.info("Unable to find user with username {}", username);
+			return ResponseEntity.notFound().build();
+		}else{
+			return ResponseEntity.ok(user);
+		}
 	}
 	
 	@PostMapping("/create")
@@ -52,10 +61,12 @@ public class UserController {
 		user.setCart(cart);
 		if(createUserRequest.getPassword().length() < 7 ||
 			!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
+			logger.error("Password doesnt meet complexity requirement or confirm password is not same");
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		userRepository.save(user);
+		logger.info("Created user with username {}",user.getUsername());
 		return ResponseEntity.ok(user);
 	}
 	

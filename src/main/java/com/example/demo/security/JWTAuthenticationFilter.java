@@ -2,6 +2,8 @@ package com.example.demo.security;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,7 @@ import static com.example.demo.security.SecurityConstants.*;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
+    private Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -41,6 +44,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             new ArrayList<>())
             );
         } catch (IOException e) {
+            logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
