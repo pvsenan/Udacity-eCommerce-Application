@@ -11,10 +11,7 @@ pipeline {
             steps { sh 'mvn test' }
         }
         stage ("Copy"){
-             steps { sh 'cp *-SNAPSHOT.jar /tmp'}
-          }
-        stage ('Archive artifacts') {
-             steps { archiveArtifacts artifacts: 'dist/ecom_api.zip' }
+             steps { sh 'cp target/auth-course-0.0.1-SNAPSHOT.jar /tmp'}
         }
     }
 }
