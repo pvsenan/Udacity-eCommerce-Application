@@ -8,7 +8,7 @@ pipeline {
             steps { sh 'mvn test' }
         }
         stage ('Deployment Stage') {
-             steps { sh 'mvn spring-boot:run &' }
+             steps { sh 'cp auth-course*.jar /tmp' }
         }
     }
 }
