@@ -41,6 +41,8 @@ public class UserControllerTest {
     @Autowired
     private JacksonTester<CreateUserRequest> json;
 
+    private String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcmFiIn0.fWLuNUE3ELAm0S5h4vqHufcvIgQyDNXfycH9hMXeJjXLRR3G9aAF18gFcKn5frSg-XAfPa1Mzffc9iz1B0bn8w";
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders
@@ -119,5 +121,13 @@ public class UserControllerTest {
                 .content(json.write(createUserRequest).getJson())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldComplainWhenUserDoesNotExists() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(new URI("/api/user/invalidUser"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", token))
+                .andExpect(status().isNotFound());
     }
 }
